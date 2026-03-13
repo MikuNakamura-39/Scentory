@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scentory Reservation</title>
+    <style>
+        :root {
+            --bg: #262123;
+            --bg-2: #2d2729;
+            --panel: #342e30;
+            --panel-2: #41393c;
+            --text: #f4eee8;
+            --muted: #c7bbb2;
+            --line: rgba(255, 255, 255, .14);
+            --accent: #A80507;
+            --accent-deep: #7f0506;
+            --gold: #f1d76a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 1440px;
+            background:
+                radial-gradient(circle at top left, rgba(168, 5, 7, .14), transparent 26%),
+                linear-gradient(180deg, #221e1f 0%, #262123 100%);
+            color: var(--text);
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+            overflow-x: auto;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: 1180px;
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 30;
+            padding-top: 2px;
+            background: transparent;
+            transition: background-color .28s ease, backdrop-filter .28s ease, box-shadow .28s ease, padding .28s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .03);
+            padding-top: 0;
+        }
+
+        .site-header .inner {
+            width: 1280px;
+            min-height: 44px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding-top: 0;
+        }
+
+        .logo-img {
+            height: 136px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding-top: 0;
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: #fff;
+            height: 44px;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+            font-weight: 400;
+            transition: color .28s ease;
+        }
+
+        .site-header.scrolled .nav {
+            color: #fff;
+        }
+
+        .nav a {
+            white-space: nowrap;
+        }
+
+        .nav .reserve {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, 0.82);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            padding: 0;
+            margin-left: 12px;
+            box-shadow: 0 8px 30px rgba(120, 0, 0, .18);
+        }
+
+        .nav .reserve::after {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            border: 2px solid rgba(241, 215, 106, .72);
+            animation: reserveRing 2.8s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes reserveRing {
+            0% {
+                transform: scale(0.92);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: .75;
+            }
+
+            70%,
+            100% {
+                transform: scale(1.16);
+                opacity: 0;
+            }
+        }
+
+        .hero {
+            padding: 112px 0 28px;
+        }
+
+        .hero-wide {
+            width: 100%;
+        }
+
+        .hero-shell {
+            position: relative;
+            min-height: 410px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background:
+                linear-gradient(115deg, rgba(24, 19, 20, .88) 0%, rgba(24, 19, 20, .54) 40%, rgba(24, 19, 20, .82) 100%),
+                url('Hero.png') center center / cover no-repeat;
+            overflow: hidden;
+        }
+
+        .hero-shell::before {
+            content: "";
+            position: absolute;
+            top: 32px;
+            right: 38px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(168, 5, 7, .22) 0%, rgba(168, 5, 7, 0) 72%);
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 1;
+            width: 640px;
+            padding: 66px 64px 46px 180px;
+        }
+
+        .eyebrow {
+            margin: 0 0 14px;
+            font-size: 11px;
+            letter-spacing: .2em;
+            color: rgba(255, 255, 255, .68);
+        }
+
+        .hero-title {
+            margin: 0 0 18px;
+            font-size: 56px;
+            line-height: 1.05;
+            font-weight: 400;
+        }
+
+        .hero-title .drop {
+            color: var(--accent);
+        }
+
+        .hero-title .rest {
+            font-size: 0.82em;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            max-width: 600px;
+            font-size: 12px;
+            line-height: 2;
+            color: rgba(255, 255, 255, .8);
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .hero-subtitle {
+            white-space: nowrap;
+        }
+
+        .hero-visual {
+            position: absolute;
+            right: 44px;
+            top: 54px;
+            z-index: 1;
+            width: 300px;
+        }
+
+        .hero-note {
+            width: 100%;
+            padding: 24px 24px 22px;
+            background: rgba(34, 29, 30, .74);
+            border: 1px solid rgba(255, 255, 255, .12);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero-note strong {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 400;
+            color: var(--gold);
+            letter-spacing: .1em;
+        }
+
+        .hero-note p {
+            margin: 0;
+            color: rgba(255, 255, 255, .76);
+            font-size: 11px;
+            line-height: 1.8;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .hero-picks {
+            margin-top: 34px;
+            display: flex;
+            gap: 14px;
+        }
+
+        .pick {
+            min-width: 152px;
+            padding: 16px 18px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .1);
+            backdrop-filter: blur(8px);
+        }
+
+        .pick-label {
+            margin: 0 0 6px;
+            color: rgba(255, 255, 255, .58);
+            font-size: 10px;
+            letter-spacing: .12em;
+        }
+
+        .pick-value {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .content {
+            padding: 24px 0 110px;
+        }
+
+        .top-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 28px;
+            align-items: start;
+            margin-bottom: 26px;
+        }
+
+        .summary-card,
+        .calendar-card,
+        .details-card {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .summary-card {
+            padding: 28px 26px;
+        }
+
+        .summary-card h2,
+        .calendar-head h2,
+        .details-head h2 {
+            margin: 0;
+            font-size: 34px;
+            line-height: 1.08;
+            font-weight: 400;
+        }
+
+
+        .sub {
+            margin: 8px 0 22px;
+            font-size: 11px;
+            letter-spacing: .12em;
+            color: rgba(255, 255, 255, .72);
+        }
+
+        .summary-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .summary-item {
+            padding-top: 14px;
+            border-top: 1px solid var(--line);
+        }
+
+        .summary-label {
+            margin: 0 0 4px;
+            color: rgba(255, 255, 255, .58);
+            font-size: 10px;
+            letter-spacing: .12em;
+        }
+
+        .summary-value {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .calendar-card {
+            padding: 32px 34px 34px;
+        }
+
+        .calendar-head,
+        .details-head {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .calendar-step {
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: .14em;
+        }
+
+        .calendar-shell {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 26px;
+        }
+
+        .calendar-box,
+        .time-box {
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .08);
+            padding: 22px;
+        }
+
+        .calendar-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .month {
+            font-size: 24px;
+            letter-spacing: .04em;
+        }
+
+        .calendar-arrows {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-arrows button {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .16);
+            background: transparent;
+            color: rgba(255, 255, 255, .84);
+            cursor: pointer;
+        }
+
+        .weekdays,
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .weekdays {
+            margin-bottom: 12px;
+        }
+
+        .weekdays span {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .56);
+            letter-spacing: .1em;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            border: 1px solid rgba(255, 255, 255, .09);
+            background: rgba(255, 255, 255, .02);
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, .9);
+            cursor: pointer;
+            transition: border-color .24s ease, background-color .24s ease, transform .24s ease;
+        }
+
+        .day.muted {
+            color: rgba(255, 255, 255, .28);
+            cursor: default;
+        }
+
+        .day.available:hover,
+        .time-slot:hover {
+            border-color: rgba(241, 215, 106, .6);
+            transform: translateY(-1px);
+        }
+
+        .day.selected {
+            background: #A80507;
+            border-color: #A80507;
+        }
+
+        .time-top {
+            min-height: 70px;
+            margin-bottom: 18px;
+            padding-top: 8px;
+        }
+
+        .time-top strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 400;
+            font-size: 18px;
+            min-height: 27px;
+        }
+
+        .time-top p {
+            margin: 0;
+            color: rgba(255, 255, 255, .64);
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .time-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .time-slot {
+            min-height: 56px;
+            padding: 0 16px;
+            border: 1px solid rgba(255, 255, 255, .09);
+            background: rgba(255, 255, 255, .02);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: border-color .24s ease, background-color .24s ease, transform .24s ease;
+        }
+
+        .time-slot:disabled {
+            color: rgba(255, 255, 255, .38);
+            border-color: rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .01);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .time-slot.selected {
+            border-color: #A80507;
+            background: #A80507;
+        }
+
+        .time-slot span {
+            color: rgba(255, 255, 255, .58);
+            font-size: 11px;
+        }
+
+        .time-slot:disabled span {
+            color: rgba(255, 255, 255, .3);
+        }
+
+        .details-card {
+            display: none;
+            padding: 32px 34px 36px;
+        }
+
+        .details-card.is-ready {
+            display: block;
+        }
+
+        .details-locked {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255, 255, 255, .54);
+            font-size: 11px;
+            letter-spacing: .06em;
+        }
+
+        .details-card.is-ready .details-locked {
+            display: none;
+        }
+
+        .selected-summary {
+            display: none;
+            margin-top: 14px;
+            padding: 16px 18px;
+            border: 1px solid rgba(168, 5, 7, .45);
+            background: rgba(168, 5, 7, .32);
+        }
+
+        .details-card.is-ready .selected-summary {
+            display: block;
+        }
+
+        .selected-summary-label {
+            margin: 0 0 6px;
+            color: rgba(255, 255, 255, .54);
+            font-size: 10px;
+            letter-spacing: .12em;
+        }
+
+        .selected-summary-value {
+            margin: 0;
+            color: #fff;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 18px;
+            align-items: start;
+        }
+
+        .field {
+            display: grid;
+            gap: 10px;
+            position: relative;
+        }
+
+        .field.has-note {
+            margin-bottom: 28px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        .field label {
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: rgba(255, 255, 255, .78);
+        }
+
+        .field-note {
+            position: absolute;
+            left: 0;
+            top: calc(100% + 6px);
+            margin: 0;
+            color: rgba(255, 255, 255, .54);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .input,
+        .select,
+        .textarea {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: var(--panel-2);
+            color: rgba(255, 255, 255, .9);
+            font-size: 13px;
+            padding: 16px 18px;
+        }
+
+        .textarea {
+            min-height: 130px;
+            resize: none;
+        }
+
+        .notice {
+            margin-top: 26px;
+            padding: 18px 22px;
+            border-left: 2px solid var(--accent);
+            background: rgba(255, 255, 255, .03);
+            color: rgba(255, 255, 255, .76);
+            font-size: 12px;
+            line-height: 1.9;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+            margin-top: 28px;
+        }
+
+        .back-link {
+            display: flex;
+            justify-content: flex-start;
+            width: 1180px;
+            margin: -12px auto 40px;
+        }
+
+        .back-link a {
+            font-size: 15px;
+            letter-spacing: .14em;
+            color: rgba(255, 255, 255, .92);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .note {
+            color: rgba(255, 255, 255, .54);
+            font-size: 10px;
+            letter-spacing: .08em;
+        }
+
+        .submit-btn {
+            width: 240px;
+            height: 50px;
+            border-radius: 999px;
+            border: 0;
+            background: #A80507;
+            color: #fff;
+            font-size: 12px;
+            letter-spacing: .12em;
+            cursor: pointer;
+            transition: transform .24s ease, box-shadow .24s ease, background-color .24s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 6px 16px rgba(168, 5, 7, .18);
+            background: #920507;
+        }
+
+        .site-footer {
+            padding: 54px 0 28px;
+            overflow-x: clip;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1fr 120px 120px;
+            align-items: start;
+            gap: 58px;
+            padding: 0 0 26px;
+            position: relative;
+        }
+
+        .footer-top::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 100vw;
+            height: 1px;
+            background: rgba(255, 255, 255, .34);
+            transform: translateX(-50%);
+        }
+
+        .footer-brand-block {
+            padding-top: 20px;
+        }
+
+        .footer-brand {
+            font-size: 42px;
+            line-height: 1;
+            font-weight: 400;
+            margin: 0 0 10px;
+        }
+
+        .footer-copy {
+            margin: 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, .74);
+            letter-spacing: .04em;
+            line-height: 1.5;
+            font-family: "Noto Serif Gujarati", serif;
+            font-weight: 400;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .78);
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+            font-weight: 400;
+            align-content: start;
+            padding-top: 6px;
+        }
+
+
+        .footer-right {
+            position: absolute;
+            right: calc((100vw - 1180px) / -2 + 28px);
+            bottom: -22px;
+            text-align: right;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+            letter-spacing: .12em;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="inner">
+            <a href="LP.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <nav class="nav">
+                <a href="LP.html#about">About</a>
+                <a href="LP.html#overview">Price & Time</a>
+                <a href="LP.html#works">How it Works</a>
+                <a href="Review.html">Stories</a>
+                <a href="LP.html#access">Access</a>
+                <a href="FAQ.html">FAQ</a>
+                <a href="Reservation.html" class="reserve">Reservation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-wide">
+                <div class="hero-shell">
+                    <div class="hero-copy">
+                        <p class="eyebrow">SCENTORY WORKSHOP</p>
+                        <h1 class="hero-title"><span class="drop">R</span><span class="rest">eservation</span></h1>
+                        <p>世界にひとつだけの香りを作る、特別なフレグランス体験を。</p>
+                        <p class="hero-subtitle">Scentoryとともに、香りに包まれる心地よいひとときを過ごしてみませんか。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container">
+                <div class="top-grid">
+                    <aside class="summary-card">
+                        <h2>Visit<br>Summary</h2>
+                        <p class="sub">ご予約内容</p>
+                        <div class="summary-list">
+                            <div class="summary-item">
+                                <p class="summary-label">MENU</p>
+                                <p class="summary-value">オーダーフレグランス体験</p>
+                            </div>
+                            <div class="summary-item">
+                                <p class="summary-label">TIME</p>
+                                <p class="summary-value">約90分</p>
+                            </div>
+                            <div class="summary-item">
+                                <p class="summary-label">PRICE</p>
+                                <p class="summary-value">1名 8,800円（税込）</p>
+                            </div>
+                            <div class="summary-item">
+                                <p class="summary-label">PLACE</p>
+                                <p class="summary-value">Scentory Studio<br>東京・表参道</p>
+                            </div>
+                        </div>
+                    </aside>
+
+                    <section class="calendar-card">
+                        <div class="calendar-head">
+                            <div class="calendar-step">STEP 01 / CALENDAR</div>
+                            <div>
+                                <h2>Select Your<br>Date</h2>
+                                <p class="sub">まずは日付をお選びください。2ヶ月先までのご予約を承っております。</p>
+                            </div>
+                        </div>
+
+                        <div class="calendar-shell">
+                            <div class="calendar-box">
+                                <div class="calendar-top">
+                                    <div class="month" id="calendarMonthLabel">May 2026</div>
+                                    <div class="calendar-arrows">
+                                        <button type="button" id="calendarPrev">◀</button>
+                                        <button type="button" id="calendarNext">▶</button>
+                                    </div>
+                                </div>
+                                <div class="weekdays">
+                                    <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+                                </div>
+                                <div class="days" id="calendarDays"></div>
+                            </div>
+
+                            <div class="time-box">
+                                <div class="time-top">
+                                    <strong id="selectedDateLabel"></strong>
+                                    <p>選択した日付の空き時間を表示しています。</p>
+                                </div>
+                                <div class="time-list">
+                                    <button class="time-slot" type="button">11:00 <span>○</span></button>
+                                    <button class="time-slot" type="button">13:00 <span>○</span></button>
+                                    <button class="time-slot" type="button">15:00 <span>○</span></button>
+                                    <button class="time-slot" type="button" disabled>17:00 <span>×</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="details-card" id="guestDetails">
+                    <div class="details-head">
+                        <div class="calendar-step">STEP 02 / INFORMATION</div>
+                        <div>
+                            <h2>Guest<br>Details</h2>
+                            <p class="sub">お客様情報をご入力ください。</p>
+                            <span class="details-locked">日付と時間を選択すると入力欄が表示されます。</span>
+                            <div class="selected-summary" id="selectedSummary">
+                                <p class="selected-summary-label">SELECTED SESSION</p>
+                                <p class="selected-summary-value" id="selectedSummaryValue">未選択</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="field">
+                            <label>お名前</label>
+                            <input class="input" type="text" placeholder="山田　花子" />
+                        </div>
+                        <div class="field">
+                            <label>メールアドレス</label>
+                            <input class="input" type="email" placeholder="example@scentory.jp" />
+                        </div>
+                        <div class="field">
+                            <label>電話番号</label>
+                            <input class="input" type="tel" placeholder="000-0000-0000" />
+                        </div>
+                        <div class="field has-note">
+                            <label>来店人数</label>
+                            <select class="select">
+                                <option>1名</option>
+                                <option>2名</option>
+                                <option>3名</option>
+                                <option>4名</option>
+                                <option>5名</option>
+                            </select>
+                            <p class="field-note">6名以上の団体様のご予約はお電話のみで承ります</p>
+                        </div>
+                        <div class="field full">
+                            <label>ご要望・ご相談</label>
+                            <textarea class="textarea" placeholder="香りのイメージや、事前に伝えておきたい内容をご記入ください。"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="submit-btn" type="button">確認画面へ</button>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <div class="back-link"><a href="LP.html#top">←BACK</a></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand-block">
+                    <p class="footer-brand">Scentory</p>
+                    <p class="footer-copy">香りでつくる、私だけの物語</p>
+                </div>
+                <div class="footer-links">
+                    <a href="LP.html#about">About</a>
+                    <a href="LP.html#overview">Price & Time</a>
+                    <a href="LP.html#works">How it Works</a>
+                </div>
+                <div class="footer-links">
+                    <a href="Review.html">Stories</a>
+                    <a href="LP.html#access">Access</a>
+                    <a href="FAQ.html">FAQ</a>
+                    <a href="Reservation.html">Reservation</a>
+                </div>
+                <div class="footer-right">SCENTORY.inc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const header = document.querySelector('.site-header');
+        const onScrollHeader = () => {
+            if (!header) return;
+            header.classList.toggle('scrolled', window.scrollY > 120);
+        };
+        onScrollHeader();
+        window.addEventListener('scroll', onScrollHeader);
+
+        const timeButtons = document.querySelectorAll('.time-slot');
+        const guestDetails = document.getElementById('guestDetails');
+        const selectedDateLabel = document.getElementById('selectedDateLabel');
+        const selectedSummaryValue = document.getElementById('selectedSummaryValue');
+        const currentMonthLabel = document.getElementById('calendarMonthLabel');
+        const calendarDays = document.getElementById('calendarDays');
+        const calendarPrev = document.getElementById('calendarPrev');
+        const calendarNext = document.getElementById('calendarNext');
+        const today = new Date();
+        const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const maxDate = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+        let calendarDate = new Date(today.getFullYear(), today.getMonth(), 1);
+        let selectedDate = null;
+        const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+
+        const formatSelectedDate = (dateValue) => {
+            if (!(dateValue instanceof Date)) return '日付を選択してください';
+            const dayValue = dateValue.getDate();
+            const monthValue = dateValue.getMonth() + 1;
+            const yearValue = dateValue.getFullYear();
+            const weekdayValue = weekdayNames[dateValue.getDay()];
+            return `${yearValue}年${monthValue}月${dayValue}日（${weekdayValue}）`;
+        };
+
+        const isSameDate = (left, right) => {
+            if (!left || !right) return false;
+            return left.getFullYear() === right.getFullYear()
+                && left.getMonth() === right.getMonth()
+                && left.getDate() === right.getDate();
+        };
+
+        const isBeforeDate = (left, right) => left.getTime() < right.getTime();
+        const isAfterDate = (left, right) => left.getTime() > right.getTime();
+
+        const toDateKey = (dateValue) => {
+            const year = dateValue.getFullYear();
+            const month = String(dateValue.getMonth() + 1).padStart(2, '0');
+            const day = String(dateValue.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+
+        const renderCalendar = () => {
+            if (!calendarDays || !currentMonthLabel) return;
+            const year = calendarDate.getFullYear();
+            const month = calendarDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const startDay = firstDay.getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            const cells = [];
+
+            currentMonthLabel.textContent = `${year}年${month + 1}月`;
+
+            for (let index = 0; index < startDay; index += 1) {
+                const dayNumber = daysInPrevMonth - startDay + index + 1;
+                cells.push(`<div class="day muted">${dayNumber}</div>`);
+            }
+
+            for (let day = 1; day <= daysInMonth; day += 1) {
+                const dateValue = new Date(year, month, day);
+                const isSelectable = !isBeforeDate(dateValue, minDate) && !isAfterDate(dateValue, maxDate);
+                const selectedClass = isSameDate(selectedDate, dateValue) ? ' selected' : '';
+                const classes = isSelectable ? `day available${selectedClass}` : 'day muted';
+                const tag = isSelectable ? 'button' : 'div';
+                const attrs = isSelectable ? ` type="button" data-date="${toDateKey(dateValue)}"` : '';
+                cells.push(`<${tag} class="${classes}"${attrs}>${day}</${tag}>`);
+            }
+
+            const trailingCount = 42 - cells.length;
+            for (let day = 1; day <= trailingCount; day += 1) {
+                cells.push(`<div class="day muted">${day}</div>`);
+            }
+
+            calendarDays.innerHTML = cells.join('');
+            if (calendarPrev) {
+                const prevMonthDate = new Date(year, month - 1, 1);
+                calendarPrev.disabled = prevMonthDate < new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+                calendarPrev.style.opacity = calendarPrev.disabled ? '.35' : '1';
+                calendarPrev.style.cursor = calendarPrev.disabled ? 'default' : 'pointer';
+            }
+            if (calendarNext) {
+                const nextMonthDate = new Date(year, month + 1, 1);
+                calendarNext.disabled = nextMonthDate > new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+                calendarNext.style.opacity = calendarNext.disabled ? '.35' : '1';
+                calendarNext.style.cursor = calendarNext.disabled ? 'default' : 'pointer';
+            }
+        };
+
+        const syncSelectedDateLabel = () => {
+            if (!selectedDateLabel) return;
+            selectedDateLabel.textContent = selectedDate ? formatSelectedDate(selectedDate) : '';
+        };
+
+        const syncSelectedSummary = () => {
+            if (!selectedSummaryValue) return;
+            const selectedTime = document.querySelector('.time-slot.selected');
+            if (selectedDate && selectedTime) {
+                selectedSummaryValue.textContent = `${formatSelectedDate(selectedDate)} / ${selectedTime.childNodes[0].textContent.trim()}`;
+                return;
+            }
+            selectedSummaryValue.textContent = '未選択';
+        };
+
+        const syncGuestDetails = () => {
+            if (!guestDetails) return;
+            const hasDay = selectedDate;
+            const hasTime = document.querySelector('.time-slot.selected');
+            guestDetails.classList.toggle('is-ready', Boolean(hasDay && hasTime));
+        };
+
+        calendarDays?.addEventListener('click', (event) => {
+            const target = event.target;
+            if (!(target instanceof HTMLElement) || !target.matches('.day.available')) return;
+            const dateText = target.dataset.date;
+            if (!dateText) return;
+            const [year, month, day] = dateText.split('-').map(Number);
+            selectedDate = new Date(year, month - 1, day);
+            renderCalendar();
+            syncSelectedDateLabel();
+            syncSelectedSummary();
+            syncGuestDetails();
+        });
+
+        calendarPrev?.addEventListener('click', () => {
+            if (calendarPrev.disabled) return;
+            calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() - 1, 1);
+            renderCalendar();
+        });
+
+        calendarNext?.addEventListener('click', () => {
+            if (calendarNext.disabled) return;
+            calendarDate = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 1);
+            renderCalendar();
+        });
+
+        timeButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                timeButtons.forEach((other) => other.classList.remove('selected'));
+                button.classList.add('selected');
+                syncSelectedSummary();
+                syncGuestDetails();
+                if (guestDetails?.classList.contains('is-ready')) {
+                    const headerOffset = 120;
+                    const targetTop = guestDetails.getBoundingClientRect().top + window.scrollY - headerOffset;
+                    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+                }
+            });
+        });
+
+        renderCalendar();
+        syncSelectedDateLabel();
+        syncSelectedSummary();
+        syncGuestDetails();
+    </script>
+</body>
+
+</html>
