@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scentory Review</title>
+    <style>
+        :root {
+            --bg: #262123;
+            --panel: #342e30;
+            --panel-2: #41393c;
+            --text: #f4eee8;
+            --muted: #c7bbb2;
+            --line: rgba(255, 255, 255, .14);
+            --accent: #A80507;
+            --gold: #f1d76a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 1440px;
+            background:
+                radial-gradient(circle at top left, rgba(168, 5, 7, .14), transparent 26%),
+                linear-gradient(180deg, #221e1f 0%, #262123 100%);
+            color: var(--text);
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+            overflow-x: auto;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 1180px;
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 30;
+            padding-top: 2px;
+            background: transparent;
+            transition: background-color .28s ease, backdrop-filter .28s ease, box-shadow .28s ease, padding .28s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .03);
+            padding-top: 0;
+        }
+
+        .site-header .inner {
+            width: 1280px;
+            min-height: 44px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 136px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: #fff;
+            height: 44px;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+            font-weight: 400;
+        }
+
+        .nav a {
+            white-space: nowrap;
+        }
+
+        .nav .reserve {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, 0.82);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
+            box-shadow: 0 8px 30px rgba(120, 0, 0, .18);
+        }
+
+        .hero {
+            padding: 112px 0 36px;
+        }
+
+        .hero-wide {
+            width: 100%;
+        }
+
+        .hero-shell {
+            position: relative;
+            min-height: 360px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background:
+                linear-gradient(110deg, rgba(24, 19, 20, .86) 0%, rgba(24, 19, 20, .54) 38%, rgba(24, 19, 20, .8) 100%),
+                url('Why2.png') center center / cover no-repeat;
+            overflow: hidden;
+        }
+
+        .hero-copy {
+            width: 640px;
+            padding: 72px 0 0 180px;
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            font-size: 11px;
+            letter-spacing: .2em;
+            color: rgba(255, 255, 255, .68);
+        }
+
+        .hero-title {
+            margin: 0 0 18px;
+            font-size: 56px;
+            line-height: 1.04;
+            font-weight: 400;
+        }
+
+        .hero-title .drop {
+            color: var(--accent);
+        }
+
+        .hero-title .rest {
+            font-size: .82em;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            max-width: 520px;
+            color: rgba(255, 255, 255, .82);
+            font-size: 12px;
+            line-height: 2;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .reviews {
+            padding: 6px 0 110px;
+        }
+
+        .page-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 34px;
+        }
+
+        .page-head h2 {
+            margin: 0;
+            font-size: 38px;
+            font-weight: 400;
+            line-height: 1.08;
+        }
+
+        .page-head .sub {
+            margin: 8px 0 0;
+            font-size: 11px;
+            letter-spacing: .12em;
+            color: rgba(255, 255, 255, .72);
+        }
+
+        .page-note {
+            max-width: 340px;
+            color: rgba(255, 255, 255, .58);
+            font-size: 11px;
+            line-height: 1.8;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .review-list {
+            display: grid;
+            gap: 18px;
+            width: 980px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 16px;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, .26);
+        }
+
+        .review-card.is-hidden {
+            display: none;
+        }
+
+        .review-card.reverse {
+            grid-template-columns: 1fr 420px;
+        }
+
+        .review-image {
+            width: 420px;
+            height: 258px;
+            overflow: hidden;
+            background: #1d1718;
+        }
+
+        .review-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .review-body {
+            align-self: center;
+            max-width: 450px;
+        }
+
+        .review-card.reverse .review-body {
+            justify-self: end;
+        }
+
+        .stars {
+            color: var(--gold);
+            letter-spacing: .18em;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .review-meta {
+            color: #fff;
+            letter-spacing: .04em;
+        }
+
+        .review-title {
+            margin: 0 0 12px;
+            font-size: 21px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .review-body p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 2;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .review-body p+p {
+            margin-top: 14px;
+        }
+
+        .review-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-top: 40px;
+        }
+
+        .back-link {
+            display: flex;
+            justify-content: flex-start;
+            width: 1180px;
+            margin: -12px auto 40px;
+        }
+
+        .back-link a {
+            font-size: 15px;
+            letter-spacing: .14em;
+            color: rgba(255, 255, 255, .92);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .page-chip {
+            min-width: 42px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            display: grid;
+            place-items: center;
+            color: rgba(255, 255, 255, .72);
+            font-size: 11px;
+            letter-spacing: .08em;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .page-arrow {
+            min-width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            background: rgba(255, 255, 255, .18);
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .page-arrow:disabled {
+            opacity: .46;
+            cursor: default;
+        }
+
+        .page-chip.active {
+            background: rgba(168, 5, 7, .82);
+            border-color: rgba(168, 5, 7, .82);
+            color: #fff;
+        }
+
+        .site-footer {
+            padding: 54px 0 28px;
+            overflow-x: clip;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1fr 120px 120px;
+            align-items: start;
+            gap: 58px;
+            padding: 0 0 26px;
+            position: relative;
+        }
+
+        .footer-top::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 100vw;
+            height: 1px;
+            background: rgba(255, 255, 255, .34);
+            transform: translateX(-50%);
+        }
+
+        .footer-brand-block {
+            padding-top: 20px;
+        }
+
+        .footer-brand {
+            margin: 0 0 10px;
+            font-size: 42px;
+            line-height: 1;
+            font-weight: 400;
+        }
+
+        .footer-copy {
+            margin: 0;
+            color: rgba(255, 255, 255, .74);
+            font-size: 12px;
+            line-height: 1.5;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 8px;
+            padding-top: 6px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .78);
+        }
+
+
+        .footer-right {
+            position: absolute;
+            right: calc((100vw - 1180px) / -2 + 28px);
+            bottom: -22px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+            letter-spacing: .12em;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="inner">
+            <a href="LP.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <nav class="nav">
+                <a href="LP.html#about">About</a>
+                <a href="LP.html#overview">Price & Time</a>
+                <a href="LP.html#works">How it Works</a>
+                <a href="Review.html">Stories</a>
+                <a href="LP.html#access">Access</a>
+                <a href="FAQ.html">FAQ</a>
+                <a href="Reservation.html" class="reserve">Reservation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-wide">
+                <div class="hero-shell">
+                    <div class="hero-copy">
+                        <p class="eyebrow">SCENTORY REVIEW</p>
+                        <h1 class="hero-title"><span class="drop">S</span><span class="rest">tories</span></h1>
+                        <p>香りを選んだ時間も、完成したあとも。
+                        </p>
+                        <p>Scentoryで生まれた体験のストーリーをご覧ください。</p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews">
+            <div class="container">
+                <div class="review-list">
+                    <article class="review-card" data-page="1">
+                        <div class="review-image"><img src="couple.png" alt="Review Couple"></div>
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Nさん、Mさん / 20代 / 社会人</span></div>
+                            <h3 class="review-title">恋人と、忘れられない時間に。</h3>
+                            <p>記念日のデートで利用しました。香水を自分たちで作るのは初めてでしたが、スタッフの方が丁寧に説明してくれるので安心して楽しめました。香りを一緒に選ぶ時間もすごく楽しくて、2人の思い出になりました。完成した香水を持ち帰れるのも嬉しくて、帰ってからもその香りを嗅ぐと今日のことを思い出します。普通のデートとは違う特別な体験ができました。
+
+                            </p>
+
+                        </div>
+                    </article>
+
+                    <article class="review-card reverse" data-page="1">
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Tさん、Cさん / 20代 / 学生</span></div>
+                            <h3 class="review-title">旅の思い出を、香りにして持ち帰る。</h3>
+                            <p>旅行で浅草に来たときに体験しました。お店の雰囲気がおしゃれで、香りもたくさんあって選ぶのがとても楽しかったです。自分の好みを考えながら香水を作るのは初めてで、友達と「この香りいいね」と話しながら作る時間がすごく盛り上がりました。完成したボトルも可愛くて写真映えします。旅行の思い出としてとても良い体験になりました。
+                            </p>
+
+                        </div>
+                        <div class="review-image"><img src="friend.png" alt="Review Friends"></div>
+                    </article>
+
+                    <article class="review-card" data-page="1">
+                        <div class="review-image"><img src="man.png" alt="Review Solo"></div>
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Aさん / 30代 / 社会人</span></div>
+                            <h3 class="review-title">はじめての調香体験でも安心でした。</h3>
+                            <p>普段あまり香水を使わないのですが、自分に合う香りを作れると聞いて興味を持ち参加しました。香りの説明や組み合わせのアドバイスをもらいながら作れるので、初心者でも分かりやすかったです。自分で作った香りは愛着が湧きますし、普段使いもしやすい香りになりました。1人でも気軽に参加できて、とても良い体験でした。
+
+                        </div>
+                    </article>
+
+                    <article class="review-card reverse is-hidden" data-page="2">
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Yさん / 20代 / 社会人</span></div>
+                            <h3 class="review-title">静かな空間で、気持ちまで整いました。</h3>
+                            <p>慌ただしい日々の中で少し立ち止まりたくて来店しました。香りをひとつずつ比べていく時間が想像以上に心地よく、自然と気持ちが落ち着いていくのを感じました。完成した香りも普段使いしやすく、それでいて自分だけの特別感があって、毎日の気分をやわらかく整えてくれます。
+                            </p>
+
+                        </div>
+                        <div class="review-image"><img src="woman.png" alt="Review Calm"></div>
+                    </article>
+
+                    <article class="review-card is-hidden" data-page="2">
+                        <div class="review-image"><img src="Why4.png" alt="Review Gift"></div>
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Kさん / 30代 / 会社員</span></div>
+                            <h3 class="review-title">贈り物にも、自分時間にも良い体験でした。</h3>
+                            <p>プレゼント目的で予約しましたが、香りを選ぶ工程そのものがとても楽しくて、自分自身のための時間としてもしっかり満たされました。知識がなくても安心して選べたのがよかったです。特別感のある体験になりそうで、記念日やお祝いにもぴったりだと思いました。仕上がりにもきちんと満足しています。
+                            </p>
+
+                        </div>
+                    </article>
+
+                    <article class="review-card reverse is-hidden" data-page="2">
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Rさん / 20代 / 学生</span></div>
+                            <h3 class="review-title">香りを選ぶ時間そのものが思い出になる。</h3>
+                            <p>友人同士で参加しましたが、どれを選ぶか話しながら進める時間がとても楽しかったです。完成品だけではなく、選ぶ過程まで含めてしっかり記憶に残る体験でした。一人ひとり違う香りになっても納得感があり、完成後に並べて比べる時間もすごく盛り上がりました。
+                            </p>
+
+                        </div>
+                        <div class="review-image"><img src="friend2.png" alt="Review Friends"></div>
+                    </article>
+
+                    <article class="review-card is-hidden" data-page="3">
+                        <div class="review-image"><img src="woman2.png" alt="Review Balance"></div>
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Mさん / 40代 / 自営業</span></div>
+                            <h3 class="review-title">香りを整える時間が心地よかったです。</h3>
+                            <p>最初は直感だけで決めるのかと思っていましたが、香りの重なりや印象の変化を見ながら少しずつ整えていけるので、とても納得感がありました。完成した香りにも落ち着いた品が出ました。落ち着いた空間の中で、自分のための時間を持てたこと自体が印象的でした。
+                            </p>
+
+                        </div>
+                    </article>
+
+                    <article class="review-card reverse is-hidden" data-page="3">
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Sさん / 30代 / 社会人</span></div>
+                            <h3 class="review-title">忙しい日にもそっと寄り添う香り。</h3>
+                            <p>普段は香りに詳しいほうではありませんが、説明がわかりやすく、自分の感覚を大事にしながら選べたのがよかったです。完成した一本は日常に自然になじんでくれました。自宅で使うたびに、その場で香りを選んだ時間まで一緒に思い出されて、気持ちがやわらぎます。
+                            </p>
+
+                        </div>
+                        <div class="review-image"><img src="man3.png" alt="Review Comfort"></div>
+                    </article>
+
+                    <article class="review-card is-hidden" data-page="3">
+                        <div class="review-image"><img src="Why3.png" alt="Review Discovery"></div>
+                        <div class="review-body">
+                            <div class="stars">★★★★★　<span class="review-meta">Hさん / 20代 / 会社員</span></div>
+                            <h3 class="review-title">新しい自分の好みに出会えました。</h3>
+                            <p>普段は選ばない系統の香りも試してみたことで、意外と自分に合うものが見えてきました。少しずつ試しながら好みを見つけていく時間がとても新鮮でした。完成した香りには特別感もありつつ、しっかり自分らしさがあって、気持ちまで前向きになるような仕上がりでした。
+                            </p>
+
+                        </div>
+                    </article>
+                </div>
+
+                <div class="review-pagination">
+                    <button class="page-arrow" type="button" id="pagePrev">←</button>
+                    <button class="page-chip active" type="button" data-page="1">1</button>
+                    <button class="page-chip" type="button" data-page="2">2</button>
+                    <button class="page-chip" type="button" data-page="3">3</button>
+                    <button class="page-arrow" type="button" id="pageNext">→</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="back-link"><a href="LP.html#top">←BACK</a></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand-block">
+                    <p class="footer-brand">Scentory</p>
+                    <p class="footer-copy">香りでつくる、私だけの物語</p>
+                </div>
+                <div class="footer-links">
+                    <a href="LP.html#about">About</a>
+                    <a href="LP.html#overview">Price & Time</a>
+                    <a href="LP.html#works">How it Works</a>
+                </div>
+                <div class="footer-links">
+                    <a href="Review.html">Stories</a>
+                    <a href="LP.html#access">Access</a>
+                    <a href="FAQ.html">FAQ</a>
+                    <a href="Reservation.html">Reservation</a>
+                </div>
+                <div class="footer-right">SCENTORY.inc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const header = document.querySelector('.site-header');
+        const onScrollHeader = () => {
+            if (!header) return;
+            header.classList.toggle('scrolled', window.scrollY > 120);
+        };
+        onScrollHeader();
+        window.addEventListener('scroll', onScrollHeader);
+
+        const reviewCards = document.querySelectorAll('.review-card');
+        const pageChips = document.querySelectorAll('.page-chip');
+        const pagePrev = document.getElementById('pagePrev');
+        const pageNext = document.getElementById('pageNext');
+        const pageTotal = 3;
+        let currentPage = 1;
+
+        const setReviewPage = (page) => {
+            currentPage = Number(page);
+            reviewCards.forEach((card) => {
+                card.classList.toggle('is-hidden', Number(card.dataset.page) !== currentPage);
+            });
+            pageChips.forEach((chip) => {
+                chip.classList.toggle('active', Number(chip.dataset.page) === currentPage);
+            });
+            if (pagePrev) pagePrev.disabled = currentPage === 1;
+            if (pageNext) pageNext.disabled = currentPage === pageTotal;
+        };
+
+        pageChips.forEach((chip) => {
+            chip.addEventListener('click', () => {
+                setReviewPage(chip.dataset.page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        pagePrev?.addEventListener('click', () => {
+            if (currentPage <= 1) return;
+            setReviewPage(currentPage - 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        pageNext?.addEventListener('click', () => {
+            if (currentPage >= pageTotal) return;
+            setReviewPage(currentPage + 1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        setReviewPage(1);
+    </script>
+</body>
+
+</html>
