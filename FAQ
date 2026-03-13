@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scentory FAQ</title>
+    <style>
+        :root {
+            --bg: #262123;
+            --bg-2: #2d2729;
+            --panel: #342e30;
+            --text: #f4eee8;
+            --muted: #c7bbb2;
+            --line: rgba(255, 255, 255, .14);
+            --accent: #A80507;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 1440px;
+            background:
+                radial-gradient(circle at top left, rgba(168, 5, 7, .14), transparent 26%),
+                linear-gradient(180deg, #221e1f 0%, #262123 100%);
+            color: var(--text);
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+            overflow-x: auto;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .container {
+            width: 1180px;
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 30;
+            padding-top: 2px;
+            background: transparent;
+            transition: background-color .28s ease, backdrop-filter .28s ease, box-shadow .28s ease, padding .28s ease;
+        }
+
+        .site-header.scrolled {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, .03);
+            padding-top: 0;
+        }
+
+        .site-header .inner {
+            width: 1280px;
+            min-height: 44px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 136px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: #fff;
+            height: 44px;
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+            font-weight: 400;
+        }
+
+        .nav a {
+            white-space: nowrap;
+        }
+
+        .nav .reserve {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, 0.82);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
+            box-shadow: 0 8px 30px rgba(120, 0, 0, .18);
+        }
+
+        .hero {
+            padding: 112px 0 38px;
+        }
+
+        .hero-wide {
+            width: 100%;
+        }
+
+        .hero-shell {
+            position: relative;
+            min-height: 360px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background:
+                linear-gradient(110deg, rgba(24, 19, 20, .88) 0%, rgba(24, 19, 20, .58) 38%, rgba(24, 19, 20, .82) 100%),
+                url('Why4.png') 58% 58% / 92% auto no-repeat;
+            overflow: hidden;
+        }
+
+        .hero-copy {
+            width: 660px;
+            padding: 74px 0 0 180px;
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            font-size: 11px;
+            letter-spacing: .2em;
+            color: rgba(255, 255, 255, .68);
+        }
+
+        .hero-title {
+            margin: 0 0 18px;
+            font-size: 56px;
+            line-height: 1.04;
+            font-weight: 400;
+        }
+
+        .hero-title .drop {
+            color: var(--accent);
+        }
+
+        .hero-title .rest {
+            font-size: .72em;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            max-width: 520px;
+            color: rgba(255, 255, 255, .82);
+            font-size: 12px;
+            line-height: 2;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .faq-page {
+            padding: 8px 0 120px;
+        }
+
+        .faq-group {
+            margin-bottom: 30px;
+            width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-group-title {
+            margin: 0 0 12px;
+            font-size: 11px;
+            letter-spacing: .16em;
+            color: rgba(255, 255, 255, .58);
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 8px;
+        }
+
+        .faq-item {
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: rgba(255, 255, 255, .02);
+            transition: border-color .28s ease, background-color .28s ease;
+        }
+
+        .faq-item.active {
+            border-color: rgba(168, 5, 7, .72);
+            background: rgba(168, 5, 7, .08);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 14px 18px;
+            border: 0;
+            background: transparent;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .faq-label {
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .faq-icon {
+            flex: 0 0 auto;
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+            line-height: 1;
+            color: rgba(255, 255, 255, .88);
+            transition: transform .28s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .35s ease;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            padding: 0 18px 16px;
+            color: rgba(255, 255, 255, .76);
+            font-size: 12px;
+            line-height: 1.8;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .back-link {
+            display: flex;
+            justify-content: flex-start;
+            width: 1180px;
+            margin: -12px auto 40px;
+        }
+
+        .back-link a {
+            font-size: 15px;
+            letter-spacing: .14em;
+            color: rgba(255, 255, 255, .92);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .site-footer {
+            position: relative;
+            padding: 62px 0 28px;
+            background: transparent;
+            overflow-x: clip;
+        }
+
+        .footer-top {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto auto;
+            gap: 120px;
+            align-items: start;
+            padding: 18px 0 24px;
+        }
+
+        .footer-top::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 100vw;
+            height: 1px;
+            background: rgba(255, 255, 255, .34);
+            transform: translateX(-50%);
+        }
+
+        .footer-brand-block {
+            padding-top: 22px;
+        }
+
+        .footer-brand {
+            margin: 0 0 8px;
+            font-size: 42px;
+            line-height: .96;
+            font-weight: 400;
+        }
+
+        .footer-copy {
+            margin: 0;
+            color: rgba(255, 255, 255, .74);
+            font-size: 12px;
+            line-height: 1.5;
+            font-family: "Noto Serif Gujarati", serif;
+        }
+
+        .footer-links {
+            display: grid;
+            gap: 8px;
+            padding-top: 6px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .78);
+            font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+        }
+
+
+        .footer-right {
+            position: absolute;
+            right: calc((100vw - 1180px) / -2 + 18px);
+            bottom: -22px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+            letter-spacing: .12em;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="inner">
+            <a href="LP.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <nav class="nav">
+                <a href="LP.html#about">About</a>
+                <a href="LP.html#overview">Price & Time</a>
+                <a href="LP.html#works">How it Works</a>
+                <a href="Review.html">Stories</a>
+                <a href="LP.html#access">Access</a>
+                <a href="FAQ.html">FAQ</a>
+                <a href="Reservation.html" class="reserve">Reservation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-wide">
+                <div class="hero-shell">
+                    <div class="hero-copy">
+                        <p class="eyebrow">SCENTORY GUIDE</p>
+                        <h1 class="hero-title"><span class="drop">F</span><span class="rest">AQ</span></h1>
+                        <p>はじめての方でも安心して体験していただけるよう、</p>
+                        <p>ご予約前によくいただくご質問をまとめました。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-page">
+            <div class="container">
+                <div class="faq-group fade-up">
+                    <h2 class="faq-group-title">RESERVATION</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">予約は事前に必要ですか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>はい。基本的には完全予約制でご案内しています。空席がある場合のみ当日でもご案内できることがありますが、事前予約をおすすめしています。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">予約の変更やキャンセルはできますか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>可能です。ご予約日時の変更やキャンセルは、前日までにご連絡いただければ柔軟に対応しています。当日の変更は状況によりご希望に添えない場合があります。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">何名まで一緒に予約できますか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>Web予約では5名様まで承っています。6名様以上の団体利用については、お電話でのご相談をお願いしています。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group fade-up">
+                    <h2 class="faq-group-title">WORKSHOP</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">調香の知識がなくても大丈夫ですか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>もちろんです。香りの違いや組み合わせ方はスタッフが丁寧にご案内します。はじめての方でも、感覚的に選びながら自然に仕上げていける内容です。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">所要時間はどれくらいですか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>体験時間の目安は約90分です。香りを試しながら選ぶ時間も含めて、ゆとりを持って過ごしていただける構成になっています。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">完成した香水は持ち帰れますか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>はい。当日お作りいただいた香りはそのままお持ち帰りいただけます。ご自宅でもその日の記憶とともに楽しんでいただけます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group fade-up">
+                    <h2 class="faq-group-title">VISIT</h2>
+                    <div class="faq-list">
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">一人でも参加しやすいですか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>はい。お一人でじっくり香りと向き合いたい方も多くご来店されています。スタッフが自然な距離感でサポートするので、気兼ねなくご参加いただけます。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">子連れでも参加できますか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>ご参加は可能です。香料を扱うため安全面のご案内もありますので、事前にご相談いただけるとより安心してご来店いただけます。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">当日は何分前に行けばよいですか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>ご予約時間の5分前を目安にお越しください。早すぎるご来店は前のお客様対応中の場合があるため、時間に合わせてのご来店をお願いしています。</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question" type="button" aria-expanded="false">
+                                <span class="faq-label">香りが強いのが苦手でも楽しめますか？</span>
+                                <span class="faq-icon">＋</span>
+                            </button>
+                            <div class="faq-answer">
+                                <p>はい。軽やかな香りややさしく広がる香りも多くご用意しています。スタッフが好みに合わせて無理のない範囲でご提案します。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="back-link"><a href="LP.html#top">←BACK</a></div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand-block">
+                    <p class="footer-brand">Scentory</p>
+                    <p class="footer-copy">香りでつくる、私だけの物語</p>
+                </div>
+                <div class="footer-links">
+                    <a href="LP.html#about">About</a>
+                    <a href="LP.html#overview">Price & Time</a>
+                    <a href="LP.html#works">How it Works</a>
+                </div>
+                <div class="footer-links">
+                    <a href="Review.html">Stories</a>
+                    <a href="LP.html#access">Access</a>
+                    <a href="FAQ.html">FAQ</a>
+                    <a href="Reservation.html">Reservation</a>
+                </div>
+                <div class="footer-right">SCENTORY.inc</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach((item) => {
+            const btn = item.querySelector('.faq-question');
+            const panel = item.querySelector('.faq-answer');
+            btn.addEventListener('click', () => {
+                const isOpen = item.classList.contains('active');
+                faqItems.forEach((other) => {
+                    other.classList.remove('active');
+                    other.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                    other.querySelector('.faq-answer').style.maxHeight = '0px';
+                });
+                if (!isOpen) {
+                    item.classList.add('active');
+                    btn.setAttribute('aria-expanded', 'true');
+                    panel.style.maxHeight = panel.scrollHeight + 'px';
+                }
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) entry.target.classList.add('show');
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+
+        const header = document.querySelector('.site-header');
+        const onScrollHeader = () => {
+            if (!header) return;
+            header.classList.toggle('scrolled', window.scrollY > 120);
+        };
+        onScrollHeader();
+        window.addEventListener('scroll', onScrollHeader);
+    </script>
+</body>
+
+</html>
