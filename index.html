@@ -914,9 +914,162 @@
             transform: translateY(0);
         }
 
-        @media (max-width: 1439px) {
+        @media (max-width: 960px) {
             body {
-                min-width: 1440px;
+                min-width: 0;
+                overflow-x: hidden;
+            }
+
+            .container,
+            .site-header .inner,
+            .hero-inner {
+                width: min(100%, calc(100% - 32px));
+            }
+
+            .site-header .inner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+                padding: 8px 0 12px;
+            }
+
+            .logo-img {
+                height: 84px;
+            }
+
+            .nav {
+                gap: 14px;
+                flex-wrap: wrap;
+                height: auto;
+            }
+
+            .nav .reserve {
+                width: 64px;
+                height: 64px;
+                margin-left: 0;
+                font-size: 9px;
+            }
+
+            .hero {
+                height: auto;
+                min-height: 680px;
+                padding-top: 136px;
+            }
+
+            .hero-inner {
+                min-height: 560px;
+            }
+
+            .hero-copy {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                width: min(100%, 520px);
+                margin: 0 0 64px auto;
+            }
+
+            .hero-title {
+                font-size: 42px;
+            }
+
+            .hero-title-line.second {
+                padding-left: 1.4em;
+            }
+
+            .about-wrap,
+            .overview-grid,
+            .why-grid,
+            .story-row,
+            .story-row.reverse,
+            .access-grid,
+            .footer-top {
+                grid-template-columns: 1fr;
+            }
+
+            .about-image,
+            .story-image,
+            .map-wrap {
+                width: 100%;
+                height: auto;
+            }
+
+            .about-image {
+                aspect-ratio: 4 / 5;
+            }
+
+            .story-image,
+            .map-wrap {
+                aspect-ratio: 16 / 10;
+            }
+
+            .story-copy,
+            .story-copy.right,
+            .story-row.reverse .story-copy {
+                max-width: none;
+                margin: 0;
+                justify-self: auto;
+            }
+
+            .footer-top {
+                gap: 28px;
+            }
+
+            .footer-right {
+                position: static;
+                margin-top: 8px;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container,
+            .site-header .inner,
+            .hero-inner {
+                width: min(100%, calc(100% - 24px));
+            }
+
+            .logo-img {
+                height: 68px;
+            }
+
+            .hero {
+                min-height: 560px;
+                padding-top: 124px;
+            }
+
+            .hero-inner {
+                min-height: 440px;
+            }
+
+            .hero-copy {
+                width: 100%;
+                margin-bottom: 48px;
+            }
+
+            .hero-title,
+            .about-title,
+            .overview-title h2,
+            .split-title h2,
+            .works-title h2,
+            .stories-head h2,
+            .access-title h2,
+            .faq-title h2 {
+                font-size: 34px;
+            }
+
+            .overview-card,
+            .step-card {
+                padding: 20px 18px;
+            }
+
+            .step-card {
+                gap: 20px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .reserve-btn {
+                width: 100%;
             }
         }
     </style>
@@ -1296,3 +1449,4 @@
 </body>
 
 </html>
+
