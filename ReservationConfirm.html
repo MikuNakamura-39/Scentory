@@ -160,6 +160,88 @@
             font-size: 13px;
             line-height: 1.9;
         }
+
+        @media (max-width: 960px) {
+            body {
+                min-width: 0;
+                overflow-x: hidden;
+            }
+
+            .container,
+            .site-header .inner {
+                width: min(100%, calc(100% - 32px));
+            }
+
+            .site-header .inner {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+                padding: 8px 0 12px;
+            }
+
+            .logo-img {
+                height: 84px;
+            }
+
+            .nav {
+                gap: 14px;
+                flex-wrap: wrap;
+            }
+
+            .nav .reserve {
+                width: 64px;
+                height: 64px;
+                margin-left: 0;
+                font-size: 9px;
+            }
+
+            .hero {
+                padding-top: 156px;
+            }
+
+            .confirm-card {
+                padding: 28px 22px;
+                margin-bottom: 56px;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container,
+            .site-header .inner {
+                width: min(100%, calc(100% - 24px));
+            }
+
+            .logo-img {
+                height: 68px;
+            }
+
+            .hero {
+                padding-top: 136px;
+            }
+
+            .hero-note,
+            .confirm-head p,
+            .confirm-value {
+                font-size: 12px;
+            }
+
+            .confirm-head h2 {
+                font-size: 28px;
+            }
+
+            .confirm-item {
+                padding: 16px 14px 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -284,4 +366,3 @@
     </script>
 </body>
 </html>
-
