@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scentory Reservation Confirm</title>
+    <style>
+        :root {
+            --panel: #342e30;
+            --text: #f4eee8;
+            --line: rgba(255, 255, 255, .14);
+            --accent: #A80507;
+            --gold: #f1d76a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-width: 1440px;
+            background:
+                radial-gradient(circle at top left, rgba(168, 5, 7, .14), transparent 26%),
+                linear-gradient(180deg, #221e1f 0%, #262123 100%);
+            color: var(--text);
+            font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+        }
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; }
+        .container { width: 1180px; margin: 0 auto; }
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+        }
+        .site-header .inner {
+            width: 1280px;
+            min-height: 44px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo-img {
+            height: 136px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            font-size: 11px;
+            letter-spacing: .08em;
+            color: #fff;
+        }
+        .nav .reserve {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, 0.82);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
+        }
+        .hero { padding: 188px 0 24px; }
+        .hero-note {
+            margin: 0;
+            font-size: 13px;
+            line-height: 2;
+            color: rgba(255, 255, 255, .84);
+            text-align: center;
+        }
+        .confirm-card {
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, .08);
+            padding: 34px 38px 36px;
+            margin: 0 auto 84px;
+            max-width: 920px;
+        }
+        .step {
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: .14em;
+        }
+        .confirm-head { margin-bottom: 24px; }
+        .confirm-head h2 {
+            margin: 10px 0 8px;
+            font-size: 34px;
+            line-height: 1.08;
+            font-weight: 400;
+        }
+        .confirm-head p {
+            margin: 0;
+            color: rgba(255, 255, 255, .68);
+            font-size: 12px;
+            line-height: 1.9;
+        }
+        .confirm-grid {
+            display: grid;
+            gap: 0;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .03);
+        }
+        .confirm-item {
+            padding: 18px 22px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+        }
+        .confirm-item:last-child { border-bottom: 0; }
+        .confirm-label {
+            margin: 0 0 8px;
+            color: rgba(255, 255, 255, .56);
+            font-size: 10px;
+            letter-spacing: .14em;
+        }
+        .confirm-value {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin-top: 28px;
+        }
+        .back-link {
+            font-size: 14px;
+            letter-spacing: .12em;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            color: rgba(255, 255, 255, .9);
+        }
+        .submit-btn {
+            width: 240px;
+            height: 50px;
+            border-radius: 999px;
+            border: 0;
+            background: #A80507;
+            color: #fff;
+            font-size: 12px;
+            letter-spacing: .12em;
+            cursor: pointer;
+        }
+        .submit-btn:disabled {
+            opacity: .45;
+            cursor: default;
+        }
+        .empty-message {
+            padding: 24px 0 0;
+            color: rgba(255, 255, 255, .72);
+            font-size: 13px;
+            line-height: 1.9;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="inner">
+            <a href="LP.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <nav class="nav">
+                <a href="LP.html#about">About</a>
+                <a href="LP.html#overview">Price & Time</a>
+                <a href="LP.html#works">How it Works</a>
+                <a href="Review.html">Stories</a>
+                <a href="LP.html#access">Access</a>
+                <a href="FAQ.html">FAQ</a>
+                <a href="Reservation.html" class="reserve">Reservation</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <p class="hero-note">まだご予約は確定しておりません。<br>内容をご確認の上、お間違いがなければ「予約する」を押してください。</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="confirm-card">
+                <div class="confirm-head">
+                    <div class="step">STEP 03 / CONFIRM</div>
+                    <h2>Reservation<br>Details</h2>
+                    <p>ご来店日時とお客様情報を最終確認しています。</p>
+                </div>
+
+                <form id="reservationSubmitForm">
+                    <div class="confirm-grid" id="confirmGrid"></div>
+                    <p class="empty-message" id="emptyMessage" hidden>予約情報が見つかりません。もう一度予約画面から入力してください。</p>
+                    <div class="actions">
+                        <a href="Reservation.html?edit=1" class="back-link">修正する</a>
+                        <button type="submit" class="submit-btn" id="reserveSubmitButton">予約する</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const draftText = sessionStorage.getItem('scentoryReservationDraft');
+        const confirmGrid = document.getElementById('confirmGrid');
+        const emptyMessage = document.getElementById('emptyMessage');
+        const reserveSubmitButton = document.getElementById('reserveSubmitButton');
+        const reservationSubmitForm = document.getElementById('reservationSubmitForm');
+        let draft = null;
+
+        if (!draftText) {
+            confirmGrid.hidden = true;
+            emptyMessage.hidden = false;
+            reserveSubmitButton.disabled = true;
+        } else {
+            draft = JSON.parse(draftText);
+            const entries = [
+                ['MENU', draft.menuName],
+                ['PRICE', draft.priceText],
+                ['TIME', draft.durationText],
+                ['PLACE', draft.locationText],
+                ['DATE', `${draft.dateLabel} / ${draft.time}`],
+                ['お名前', draft.fullName],
+                ['メールアドレス', draft.email],
+                ['電話番号', draft.phone],
+                ['来店人数', draft.partySize],
+                ['ご要望・ご相談', draft.note || 'なし']
+            ];
+
+            confirmGrid.innerHTML = entries.map(([label, value]) => `
+                <div class="confirm-item">
+                    <p class="confirm-label">${label}</p>
+                    <p class="confirm-value">${value}</p>
+                </div>
+            `).join('');
+        }
+
+        reservationSubmitForm?.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            if (!draft) return;
+
+            reserveSubmitButton.disabled = true;
+            reserveSubmitButton.textContent = '送信中...';
+
+            try {
+                const response = await fetch('http://localhost:8080/public/api/reservations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fullName: draft.fullName,
+                        email: draft.email,
+                        phone: draft.phone,
+                        partySize: Number(String(draft.partySize).replace('名', '')),
+                        note: draft.note || '',
+                        reservationDate: draft.dateKey,
+                        reservationTime: draft.time,
+                        channel: 'LP Reservation',
+                        menuName: draft.menuName
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('failed');
+                }
+
+                const result = await response.json();
+                sessionStorage.setItem('scentoryReservationComplete', JSON.stringify({
+                    ...draft,
+                    reservationNumber: result.reservationNumber
+                }));
+                sessionStorage.removeItem('scentoryReservationDraft');
+                window.location.href = 'ReservationComplete.html';
+            } catch (error) {
+                reserveSubmitButton.disabled = false;
+                reserveSubmitButton.textContent = '予約する';
+                window.alert('予約送信に失敗しました。管理画面が起動しているか確認してください。');
+            }
+        });
+    </script>
+</body>
+</html>
