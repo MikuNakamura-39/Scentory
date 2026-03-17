@@ -66,7 +66,7 @@
             background: rgba(255, 255, 255, 0.18);
             backdrop-filter: blur(8px);
             box-shadow: 0 1px 0 rgba(0, 0, 0, .03);
-            padding-top: 0;
+            padding-top: 2px;
         }
 
         .site-header .inner {
@@ -85,7 +85,7 @@
         }
 
         .logo-img {
-            height: 136px;
+            height: 152px;
             width: auto;
             display: block;
             object-fit: contain;
@@ -105,12 +105,38 @@
             transition: color .28s ease;
         }
 
+        .nav-overlay {
+            display: none;
+        }
+
         .site-header.scrolled .nav {
             color: #fff;
         }
 
         .nav a {
             white-space: nowrap;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, .22);
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 18px;
+            height: 1px;
+            background: currentColor;
         }
 
         .nav .reserve {
@@ -159,7 +185,7 @@
         }
 
         .hero {
-            padding: 112px 0 28px;
+            padding: 72px 0 38px;
         }
 
         .hero-wide {
@@ -168,34 +194,27 @@
 
         .hero-shell {
             position: relative;
-            min-height: 410px;
+            min-height: 360px;
             border: 1px solid rgba(255, 255, 255, .08);
             background:
-                linear-gradient(115deg, rgba(24, 19, 20, .88) 0%, rgba(24, 19, 20, .54) 40%, rgba(24, 19, 20, .82) 100%),
-                url('Hero.png') center center / cover no-repeat;
+                linear-gradient(110deg, rgba(24, 19, 20, .88) 0%, rgba(24, 19, 20, .58) 38%, rgba(24, 19, 20, .82) 100%),
+                url('Hero.png') 58% 58% / 92% auto no-repeat;
             overflow: hidden;
         }
 
         .hero-shell::before {
-            content: "";
-            position: absolute;
-            top: 32px;
-            right: 38px;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(168, 5, 7, .22) 0%, rgba(168, 5, 7, 0) 72%);
+            content: none;
         }
 
         .hero-copy {
             position: relative;
             z-index: 1;
-            width: 640px;
-            padding: 66px 64px 46px 180px;
+            width: 660px;
+            padding: 74px 0 0 180px;
         }
 
         .eyebrow {
-            margin: 0 0 14px;
+            margin: 0 0 12px;
             font-size: 11px;
             letter-spacing: .2em;
             color: rgba(255, 255, 255, .68);
@@ -204,7 +223,7 @@
         .hero-title {
             margin: 0 0 18px;
             font-size: 56px;
-            line-height: 1.05;
+            line-height: 1.04;
             font-weight: 400;
         }
 
@@ -213,20 +232,20 @@
         }
 
         .hero-title .rest {
-            font-size: 0.82em;
+            font-size: .72em;
         }
 
         .hero-copy p {
             margin: 0;
-            max-width: 600px;
+            max-width: 520px;
             font-size: 12px;
             line-height: 2;
-            color: rgba(255, 255, 255, .8);
+            color: rgba(255, 255, 255, .82);
             font-family: "Noto Serif Gujarati", serif;
         }
 
         .hero-subtitle {
-            white-space: nowrap;
+            white-space: normal;
         }
 
         .hero-visual {
@@ -642,11 +661,19 @@
         }
 
         .back-link a {
-            font-size: 15px;
-            letter-spacing: .14em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 92px;
+            height: 34px;
+            padding: 0 16px;
+            border: 1px solid rgba(255, 255, 255, .22);
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: .1em;
             color: rgba(255, 255, 255, .92);
-            text-decoration: underline;
-            text-underline-offset: 4px;
+            text-decoration: none;
+            background: rgba(255, 255, 255, .04);
         }
 
         .note {
@@ -758,6 +785,7 @@
             }
 
             .site-header .inner {
+                position: relative;
                 align-items: flex-start;
                 flex-direction: column;
                 gap: 8px;
@@ -765,13 +793,47 @@
             }
 
             .logo-img {
-                height: 84px;
+                height: 92px;
             }
 
             .nav {
-                gap: 14px;
-                flex-wrap: wrap;
-                height: auto;
+                display: flex;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: min(320px, 84vw);
+                height: 100vh;
+                padding: 88px 24px 24px;
+                background: #fff;
+                color: #241f20;
+                box-shadow: -12px 0 40px rgba(0, 0, 0, .22);
+                gap: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                transform: translateX(100%);
+                transition: transform .28s ease;
+                z-index: 45;
+            }
+
+            .site-header.menu-open .nav {
+                transform: translateX(0);
+            }
+
+            .nav-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .35);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .28s ease;
+                z-index: 40;
+            }
+
+            .site-header.menu-open .nav-overlay {
+                opacity: 1;
+                pointer-events: auto;
             }
 
             .nav .reserve {
@@ -781,8 +843,31 @@
                 font-size: 9px;
             }
 
+            .menu-toggle {
+                display: inline-flex;
+                position: absolute;
+                top: 18px;
+                right: 0;
+                opacity: 1;
+                visibility: visible;
+                color: #fff;
+                border-color: rgba(255, 255, 255, .38);
+                background: transparent;
+                z-index: 80;
+            }
+
+            .site-header.menu-open .menu-toggle {
+                color: #241f20;
+                border-color: rgba(36, 31, 32, .16);
+            }
+
+            .site-header.scrolled .nav,
+            .site-header .nav {
+                color: #241f20;
+            }
+
             .hero {
-                padding: 156px 0 20px;
+                padding: 120px 0 24px;
             }
 
             .hero-shell {
@@ -791,7 +876,7 @@
 
             .hero-copy {
                 width: 100%;
-                padding: 44px 24px 28px;
+                padding: 44px 24px;
             }
 
             .hero-title {
@@ -818,28 +903,75 @@
                 min-width: 0;
             }
 
+            .content {
+                padding: 18px 0 88px;
+            }
+
             .top-grid,
             .calendar-shell,
-            .details-grid,
-            .footer-top {
-                grid-template-columns: 1fr;
+            .details-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
 
             .calendar-card,
             .summary-card,
             .details-card {
-                padding-left: 22px;
-                padding-right: 22px;
+                padding: 22px 20px;
+            }
+
+            .summary-card {
+                gap: 18px;
+            }
+
+            .calendar-box,
+            .time-box {
+                padding: 18px;
+            }
+
+            .time-box {
+                min-width: 0;
+            }
+
+            .weekdays,
+            .days {
+                gap: 8px;
+            }
+
+            .day {
+                min-width: 0;
+                font-size: 13px;
+            }
+
+            .details-grid {
+                gap: 16px;
+            }
+
+            .field.has-note {
+                margin-bottom: 20px;
             }
 
             .footer-top {
-                gap: 28px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-top {
+                gap: 28px 36px;
+            }
+
+            .footer-brand-block {
+                grid-column: 1 / -1;
+            }
+
+            .footer-links {
+                padding-top: 0;
             }
 
             .footer-right {
-                position: static;
-                margin-top: 8px;
-                text-align: left;
+                position: absolute;
+                right: 0;
+                bottom: -26px;
+                margin-top: 0;
+                text-align: right;
             }
         }
 
@@ -851,30 +983,34 @@
             }
 
             .logo-img {
-                height: 68px;
+                height: 76px;
             }
 
             .hero {
-                padding-top: 136px;
+                padding-top: 100px;
             }
 
-            .hero-copy,
+            .hero-copy {
+                padding: 32px 18px;
+                padding-top: 148px;
+            }
+
             .calendar-card,
             .summary-card,
             .details-card {
-                padding: 20px 16px;
+                padding: 12px 10px;
             }
 
             .hero-title,
             .summary-card h2,
             .calendar-head h2,
             .details-head h2 {
-                font-size: 30px;
+                font-size: 22px;
             }
 
             .calendar-box,
             .time-box {
-                padding: 14px;
+                padding: 10px;
             }
 
             .weekdays,
@@ -882,8 +1018,54 @@
                 gap: 6px;
             }
 
+            .calendar-top,
+            .time-top {
+                gap: 8px;
+            }
+
             .day {
                 font-size: 12px;
+            }
+
+            .hero-copy p,
+            .hero-note p,
+            .sub,
+            .summary-value,
+            .selected-summary-value,
+            .notice,
+            .field-note,
+            .note {
+                font-size: 10px;
+                line-height: 1.72;
+            }
+
+            .hero-subtitle {
+                max-width: none;
+                font-size: 6px;
+                line-height: 1.45;
+                white-space: nowrap;
+            }
+
+            .pick {
+                padding: 10px 12px;
+            }
+
+            .pick-value,
+            .month,
+            .time-top strong {
+                font-size: 14px;
+            }
+
+            .input,
+            .select,
+            .textarea,
+            .time-slot {
+                font-size: 11px;
+                padding: 12px;
+            }
+
+            .textarea {
+                min-height: 96px;
             }
 
             .actions {
@@ -892,7 +1074,78 @@
 
             .submit-btn {
                 width: 100%;
+                height: 40px;
+                font-size: 10px;
             }
+
+            .menu-toggle {
+                top: 14px;
+            }
+        }
+        .nav-meta {
+            display: none;
+        }
+
+        .nav .reserve {
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            background: transparent;
+            position: static;
+            overflow: visible;
+            display: inline;
+            place-items: initial;
+            color: var(--accent);
+            text-align: left;
+            font-size: inherit;
+            line-height: inherit;
+            margin-left: 0;
+            box-shadow: none;
+            font-weight: 700;
+        }
+
+        @media (max-width: 960px) {
+            .nav .reserve {
+                width: auto;
+                height: auto;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .nav-meta {
+                display: grid;
+                gap: 6px;
+                margin-top: auto;
+                padding-top: 28px;
+                color: #6c5850;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .nav-meta p {
+                margin: 0;
+            }
+
+            .nav-meta .brand {
+                margin: 0 0 8px;
+                color: #241f20;
+                font-size: 30px;
+                line-height: 1.2;
+            }
+        }
+
+        .site-header,
+        .nav,
+        .nav-overlay,
+        .menu-toggle span,
+        .nav .reserve,
+        .nav .reserve::after {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .nav .reserve::after {
+            content: none !important;
         }
     </style>
 </head>
@@ -901,6 +1154,12 @@
     <header class="site-header">
         <div class="inner">
             <a href="index.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-overlay"></div>
             <nav class="nav">
                 <a href="index.html#about">About</a>
                 <a href="index.html#overview">Price & Time</a>
@@ -909,6 +1168,12 @@
                 <a href="index.html#access">Access</a>
                 <a href="FAQ.html">FAQ</a>
                 <a href="Reservation.html" class="reserve">Reservation</a>
+                <div class="nav-meta">
+                    <p class="brand">Scentory</p>
+                    <p>〒000-0000 東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
+                    <p>営業時間 11:00 - 19:00 / 最終受付 17:30</p>
+                    <p>JR原宿駅・東京メトロ明治神宮前駅より 徒歩6分</p>
+                </div>
             </nav>
         </div>
     </header>
@@ -1072,12 +1337,32 @@
 
     <script>
         const header = document.querySelector('.site-header');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navOverlay = document.querySelector('.nav-overlay');
+        const navLinks = document.querySelectorAll('.nav a');
         const onScrollHeader = () => {
             if (!header) return;
             header.classList.toggle('scrolled', window.scrollY > 120);
         };
         onScrollHeader();
         window.addEventListener('scroll', onScrollHeader);
+
+        menuToggle?.addEventListener('click', () => {
+            const isOpen = header.classList.toggle('menu-open');
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                header?.classList.remove('menu-open');
+                menuToggle?.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        navOverlay?.addEventListener('click', () => {
+            header?.classList.remove('menu-open');
+            menuToggle?.setAttribute('aria-expanded', 'false');
+        });
 
         const timeButtons = document.querySelectorAll('.time-slot');
         const guestDetails = document.getElementById('guestDetails');
@@ -1313,5 +1598,7 @@
 </body>
 
 </html>
+
+
 
 
