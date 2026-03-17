@@ -62,7 +62,7 @@
         }
 
         .logo-img {
-            height: 136px;
+            height: 152px;
             width: auto;
             display: block;
             object-fit: contain;
@@ -75,6 +75,32 @@
             font-size: 11px;
             letter-spacing: .08em;
             color: #fff;
+        }
+
+        .nav-overlay {
+            display: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            border: 1px solid rgba(255, 255, 255, .22);
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 18px;
+            height: 1px;
+            background: currentColor;
         }
 
         .nav .reserve {
@@ -224,12 +250,47 @@
             }
 
             .logo-img {
-                height: 84px;
+                height: 92px;
             }
 
             .nav {
-                gap: 14px;
-                flex-wrap: wrap;
+                display: flex;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: min(320px, 84vw);
+                height: 100vh;
+                padding: 88px 24px 24px;
+                background: #fff;
+                color: #241f20;
+                box-shadow: -12px 0 40px rgba(0, 0, 0, .22);
+                gap: 12px;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                transform: translateX(100%);
+                transition: transform .28s ease;
+                z-index: 45;
+            }
+
+            .site-header.menu-open .nav {
+                transform: translateX(0);
+            }
+
+            .nav-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, .35);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .28s ease;
+                z-index: 40;
+            }
+
+            .site-header.menu-open .nav-overlay {
+                opacity: 1;
+                pointer-events: auto;
             }
 
             .nav .reserve {
@@ -237,6 +298,27 @@
                 height: 64px;
                 margin-left: 0;
                 font-size: 9px;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+                position: absolute;
+                top: 18px;
+                right: 12px;
+                color: #fff;
+                border-color: rgba(255, 255, 255, .38);
+                background: transparent;
+                z-index: 50;
+            }
+
+            .site-header.menu-open .menu-toggle {
+                color: #241f20;
+                border-color: rgba(36, 31, 32, .16);
+            }
+
+            .site-header.scrolled .nav,
+            .site-header .nav {
+                color: #241f20;
             }
 
             .hero {
@@ -266,7 +348,7 @@
             }
 
             .logo-img {
-                height: 68px;
+                height: 76px;
             }
 
             .hero {
@@ -276,16 +358,94 @@
             .hero-note,
             .confirm-head p,
             .confirm-value {
-                font-size: 12px;
+                font-size: 10px;
+                line-height: 1.72;
             }
 
             .confirm-head h2 {
-                font-size: 28px;
+                font-size: 18px;
             }
 
             .confirm-item {
-                padding: 16px 14px 14px;
+                padding: 10px 9px 9px;
             }
+
+            .confirm-card {
+                padding: 14px 10px;
+            }
+
+            .confirm-label {
+                font-size: 8px;
+            }
+
+            .submit-btn {
+                height: 40px;
+                font-size: 10px;
+            }
+        }
+
+        .nav-meta {
+            display: none;
+        }
+
+        .nav .reserve {
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            background: transparent;
+            display: inline;
+            place-items: initial;
+            color: var(--accent);
+            text-align: left;
+            font-size: inherit;
+            line-height: inherit;
+            margin-left: 0;
+            box-shadow: none;
+            font-weight: 700;
+        }
+
+        @media (max-width: 960px) {
+            .nav .reserve {
+                width: auto;
+                height: auto;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .nav-meta {
+                display: grid;
+                gap: 6px;
+                margin-top: auto;
+                padding-top: 28px;
+                color: #6c5850;
+                font-size: 11px;
+                line-height: 1.6;
+            }
+
+            .nav-meta p {
+                margin: 0;
+            }
+
+            .nav-meta .brand {
+                margin: 0 0 8px;
+                color: #241f20;
+                font-size: 30px;
+                line-height: 1.2;
+            }
+        }
+
+        .site-header,
+        .nav,
+        .nav-overlay,
+        .menu-toggle span,
+        .nav .reserve,
+        .nav .reserve::after {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .nav .reserve::after {
+            content: none !important;
         }
     </style>
 </head>
@@ -294,6 +454,12 @@
     <header class="site-header">
         <div class="inner">
             <a href="index.html#top" class="logo"><img src="Logo.png" alt="Scentory Logo" class="logo-img"></a>
+            <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-overlay"></div>
             <nav class="nav">
                 <a href="index.html#about">About</a>
                 <a href="index.html#overview">Price & Time</a>
@@ -302,6 +468,12 @@
                 <a href="index.html#access">Access</a>
                 <a href="FAQ.html">FAQ</a>
                 <a href="Reservation.html" class="reserve">Reservation</a>
+                <div class="nav-meta">
+                    <p class="brand">Scentory</p>
+                    <p>〒000-0000 東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
+                    <p>営業時間 11:00 - 19:00 / 最終受付 17:30</p>
+                    <p>JR原宿駅・東京メトロ明治神宮前駅より 徒歩6分</p>
+                </div>
             </nav>
         </div>
     </header>
@@ -335,11 +507,32 @@
 
     <script>
         const draftText = sessionStorage.getItem('scentoryReservationDraft');
+        const header = document.querySelector('.site-header');
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navOverlay = document.querySelector('.nav-overlay');
+        const navLinks = document.querySelectorAll('.nav a');
         const confirmGrid = document.getElementById('confirmGrid');
         const emptyMessage = document.getElementById('emptyMessage');
         const reserveSubmitButton = document.getElementById('reserveSubmitButton');
         const reservationSubmitForm = document.getElementById('reservationSubmitForm');
         let draft = null;
+
+        menuToggle?.addEventListener('click', () => {
+            const isOpen = header.classList.toggle('menu-open');
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                header?.classList.remove('menu-open');
+                menuToggle?.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        navOverlay?.addEventListener('click', () => {
+            header?.classList.remove('menu-open');
+            menuToggle?.setAttribute('aria-expanded', 'false');
+        });
 
         if (!draftText) {
             confirmGrid.hidden = true;
@@ -413,3 +606,4 @@
 </body>
 
 </html>
+
