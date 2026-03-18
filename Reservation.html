@@ -1237,7 +1237,7 @@
                         </div>
                     </aside>
 
-                    <section class="calendar-card">
+                    <section class="calendar-card" id="calendarSection">
                         <div class="calendar-head">
                             <div class="calendar-step">STEP 01 / CALENDAR</div>
                             <div>
@@ -1385,6 +1385,7 @@
 
         const timeButtons = document.querySelectorAll('.time-slot');
         const guestDetails = document.getElementById('guestDetails');
+        const calendarSection = document.getElementById('calendarSection');
         const selectedDateLabel = document.getElementById('selectedDateLabel');
         const selectedSummaryValue = document.getElementById('selectedSummaryValue');
         const currentMonthLabel = document.getElementById('calendarMonthLabel');
@@ -1397,6 +1398,7 @@
         const guestPhoneInput = document.getElementById('guestPhone');
         const guestPartySizeSelect = document.getElementById('guestPartySize');
         const guestNoteInput = document.getElementById('guestNote');
+        const reservationDraftStorageKey = 'scentoryReservationDraft';
         const shouldRestoreDraft = new URLSearchParams(window.location.search).get('edit') === '1';
         const today = new Date();
         const minDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -1404,6 +1406,7 @@
         let calendarDate = new Date(today.getFullYear(), today.getMonth(), 1);
         let selectedDate = null;
         const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+        const shouldJumpToCalendar = window.location.hash === '#calendar';
 
         const formatSelectedDate = (dateValue) => {
             if (!(dateValue instanceof Date)) return '日付を選択してください';
@@ -1429,6 +1432,17 @@
             const month = String(dateValue.getMonth() + 1).padStart(2, '0');
             const day = String(dateValue.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
+        };
+
+        const readDraftStorage = () => sessionStorage.getItem(reservationDraftStorageKey) || localStorage.getItem(reservationDraftStorageKey);
+        const writeDraftStorage = (payload) => {
+            const draftText = JSON.stringify(payload);
+            sessionStorage.setItem(reservationDraftStorageKey, draftText);
+            localStorage.setItem(reservationDraftStorageKey, draftText);
+        };
+        const clearDraftStorage = () => {
+            sessionStorage.removeItem(reservationDraftStorageKey);
+            localStorage.removeItem(reservationDraftStorageKey);
         };
 
         const renderCalendar = () => {
@@ -1501,7 +1515,7 @@
         };
 
         const restoreDraft = () => {
-            const draftText = sessionStorage.getItem('scentoryReservationDraft');
+            const draftText = readDraftStorage();
             if (!draftText) return;
 
             try {
@@ -1518,7 +1532,7 @@
                 if (guestPartySizeSelect && draft.partySize) guestPartySizeSelect.value = draft.partySize;
                 if (guestNoteInput) guestNoteInput.value = draft.note || '';
             } catch (error) {
-                sessionStorage.removeItem('scentoryReservationDraft');
+                clearDraftStorage();
             }
         };
 
@@ -1588,17 +1602,17 @@
                 note: guestNoteInput?.value.trim() || ''
             };
 
-            sessionStorage.setItem('scentoryReservationDraft', JSON.stringify(payload));
+            writeDraftStorage(payload);
             window.location.href = 'ReservationConfirm.html';
         });
 
         if (shouldRestoreDraft) {
             restoreDraft();
         } else {
-            sessionStorage.removeItem('scentoryReservationDraft');
+            clearDraftStorage();
         }
         renderCalendar();
-        const draftText = shouldRestoreDraft ? sessionStorage.getItem('scentoryReservationDraft') : null;
+        const draftText = shouldRestoreDraft ? readDraftStorage() : null;
         if (draftText) {
             try {
                 const draft = JSON.parse(draftText);
@@ -1607,13 +1621,22 @@
                     savedTimeButton.classList.add('selected');
                 }
             } catch (error) {
-                sessionStorage.removeItem('scentoryReservationDraft');
+                clearDraftStorage();
             }
         }
         syncSelectedDateLabel();
         syncSelectedSummary();
         syncGuestDetails();
+        if (shouldJumpToCalendar && calendarSection) {
+            const headerOffset = window.innerWidth <= 960 ? 96 : 120;
+            window.requestAnimationFrame(() => {
+                const targetTop = calendarSection.getBoundingClientRect().top + window.scrollY - headerOffset;
+                window.scrollTo({ top: targetTop, behavior: 'auto' });
+            });
+        }
     </script>
 </body>
 
 </html>
+
+
