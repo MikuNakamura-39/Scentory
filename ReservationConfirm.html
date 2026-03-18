@@ -338,6 +338,11 @@
             .submit-btn {
                 width: 100%;
             }
+
+            .back-link {
+                font-size: 12px;
+                letter-spacing: .08em;
+            }
         }
 
         @media (max-width: 640px) {
@@ -376,6 +381,11 @@
 
             .confirm-label {
                 font-size: 8px;
+            }
+
+            .back-link {
+                font-size: 10px;
+                letter-spacing: .06em;
             }
 
             .submit-btn {
@@ -509,7 +519,7 @@
                     <div class="confirm-grid" id="confirmGrid"></div>
                     <p class="empty-message" id="emptyMessage" hidden>予約情報が見つかりません。もう一度予約画面から入力してください。</p>
                     <div class="actions">
-                        <a href="Reservation.html?edit=1" class="back-link">←修正する</a>
+                        <a href="Reservation.html?edit=1#calendar" class="back-link">←修正する</a>
                         <button type="submit" class="submit-btn" id="reserveSubmitButton">予約する</button>
                     </div>
                 </form>
@@ -518,7 +528,18 @@
     </main>
 
     <script>
-        const draftText = sessionStorage.getItem('scentoryReservationDraft');
+        const reservationDraftStorageKey = 'scentoryReservationDraft';
+        const reservationCompleteStorageKey = 'scentoryReservationComplete';
+        const readStorage = (key) => sessionStorage.getItem(key) || localStorage.getItem(key);
+        const writeStorage = (key, value) => {
+            sessionStorage.setItem(key, value);
+            localStorage.setItem(key, value);
+        };
+        const removeStorage = (key) => {
+            sessionStorage.removeItem(key);
+            localStorage.removeItem(key);
+        };
+        const draftText = readStorage(reservationDraftStorageKey);
         const header = document.querySelector('.site-header');
         const menuToggle = document.querySelector('.menu-toggle');
         const navOverlay = document.querySelector('.nav-overlay');
@@ -551,26 +572,34 @@
             emptyMessage.hidden = false;
             reserveSubmitButton.disabled = true;
         } else {
-            draft = JSON.parse(draftText);
-            const entries = [
-                ['MENU', draft.menuName],
-                ['PRICE', draft.priceText],
-                ['TIME', draft.durationText],
-                ['PLACE', draft.locationText],
-                ['DATE', `${draft.dateLabel} / ${draft.time}`],
-                ['お名前', draft.fullName],
-                ['メールアドレス', draft.email],
-                ['電話番号', draft.phone],
-                ['来店人数', draft.partySize],
-                ['ご要望・ご相談', draft.note || 'なし']
-            ];
+            try {
+                draft = JSON.parse(draftText);
+                const entries = [
+                    ['MENU', draft.menuName],
+                    ['PRICE', draft.priceText],
+                    ['TIME', draft.durationText],
+                    ['PLACE', draft.locationText],
+                    ['DATE', `${draft.dateLabel} / ${draft.time}`],
+                    ['お名前', draft.fullName],
+                    ['メールアドレス', draft.email],
+                    ['電話番号', draft.phone],
+                    ['来店人数', draft.partySize],
+                    ['ご要望・ご相談', draft.note || 'なし']
+                ];
 
-            confirmGrid.innerHTML = entries.map(([label, value]) => `
-                <div class="confirm-item">
-                    <p class="confirm-label">${label}</p>
-                    <p class="confirm-value">${value}</p>
-                </div>
-            `).join('');
+                confirmGrid.innerHTML = entries.map(([label, value]) => `
+                    <div class="confirm-item">
+                        <p class="confirm-label">${label}</p>
+                        <p class="confirm-value">${value}</p>
+                    </div>
+                `).join('');
+            } catch (error) {
+                draft = null;
+                removeStorage(reservationDraftStorageKey);
+                confirmGrid.hidden = true;
+                emptyMessage.hidden = false;
+                reserveSubmitButton.disabled = true;
+            }
         }
 
         reservationSubmitForm?.addEventListener('submit', async (event) => {
@@ -602,7 +631,19 @@
                 }
 
                 const result = await response.json();
-                sessionStorage.setItem('scentoryReservationComplete', JSON.stringify({
+                writeStorage(reservationCompleteStorageKey, JSON.stringify({
                     ...draft,
                     reservationNumber: result.reservationNumber
                 }));
+                removeStorage(reservationDraftStorageKey);
+                window.location.href = 'ReservationComplete.html';
+            } catch (error) {
+                reserveSubmitButton.disabled = false;
+                reserveSubmitButton.textContent = '予約する';
+                window.alert('予約送信に失敗しました。管理画面が起動しているか確認してください。');
+            }
+        });
+    </script>
+</body>
+
+</html>
