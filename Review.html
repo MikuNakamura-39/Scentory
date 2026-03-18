@@ -139,7 +139,7 @@
         }
 
         .hero {
-            padding: 72px 0 38px;
+            padding: 140px 0 38px;
         }
 
         .hero-wide {
@@ -158,7 +158,7 @@
 
         .hero-copy {
             width: 660px;
-            padding: 74px 0 0 180px;
+            padding: 112px 0 0 180px;
         }
 
         .eyebrow {
@@ -226,15 +226,19 @@
         }
 
         .review-list {
-            width: min(560px, calc(100% - 56px));
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 18px;
+            width: min(920px, calc(100% - 56px));
             margin: 0 auto;
         }
 
         .review-card {
             display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 12px;
-            padding: 12px;
+            grid-template-columns: 380px minmax(0, 1fr);
+            align-items: center;
+            gap: 24px;
+            padding: 14px;
             background: transparent;
             border: 1px solid rgba(255, 255, 255, .26);
         }
@@ -245,7 +249,7 @@
 
         .review-image {
             width: 100%;
-            height: 220px;
+            height: 260px;
             overflow: hidden;
             background: #1d1718;
         }
@@ -257,13 +261,9 @@
             display: block;
         }
 
-        .review-card.reverse .review-image {
-            order: -1;
-        }
-
         .review-body {
             max-width: none;
-            padding: 12px 16px 16px;
+            padding: 12px 18px 16px 0;
         }
 
         .stars {
@@ -543,6 +543,11 @@
                 width: min(100%, calc(100% - 28px));
             }
 
+            .review-card {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 8px;
+            }
+
             .review-image {
                 width: 100%;
                 height: auto;
@@ -652,27 +657,43 @@
         }
 
         .nav .reserve {
-            width: auto;
-            height: auto;
-            border-radius: 0;
-            background: transparent;
-            display: inline;
-            place-items: initial;
-            color: var(--accent);
-            text-align: left;
-            font-size: inherit;
-            line-height: inherit;
-            margin-left: 0;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, .72);
+            border: 1px solid rgba(168, 5, 7, .88);
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
             box-shadow: none;
             font-weight: 700;
         }
 
         @media (max-width: 960px) {
+            .review-list {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 14px;
+            }
+
             .nav .reserve {
                 width: auto;
                 height: auto;
+                background: transparent;
+                border: 0;
+                display: block;
+                place-items: initial;
+                position: static;
+                overflow: visible;
+                color: var(--accent);
+                text-align: left;
                 font-size: 11px;
                 line-height: 1.6;
+                padding: 0;
+                margin-left: 0;
             }
 
             .nav-meta {
@@ -733,7 +754,8 @@
                 <a href="Reservation.html" class="reserve">Reservation</a>
                 <div class="nav-meta">
                     <p class="brand">Scentory</p>
-                    <p>〒000-0000 東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
+                    <p>〒000-0000</p>
+                    <p>東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
                     <p>営業時間 11:00 - 19:00 / 最終受付 17:30</p>
                     <p>JR原宿駅・東京メトロ明治神宮前駅より 徒歩6分</p>
                 </div>
@@ -773,6 +795,7 @@
                     </article>
 
                     <article class="review-card reverse is-hidden" data-page="2">
+                        <div class="review-image"><img src="friend.png" alt="Review Friends"></div>
                         <div class="review-body">
                             <div class="stars">★★★★★　<span class="review-meta">Tさん、Cさん / 20代 / 学生</span></div>
                             <h3 class="review-title">旅の思い出を、香りにして持ち帰る。</h3>
@@ -780,7 +803,6 @@
                             </p>
 
                         </div>
-                        <div class="review-image"><img src="friend.png" alt="Review Friends"></div>
                     </article>
 
                     <article class="review-card is-hidden" data-page="3">
@@ -794,6 +816,7 @@
                     </article>
 
                     <article class="review-card reverse is-hidden" data-page="4">
+                        <div class="review-image"><img src="woman.png" alt="Review Calm"></div>
                         <div class="review-body">
                             <div class="stars">★★★★★　<span class="review-meta">Yさん / 20代 / 社会人</span></div>
                             <h3 class="review-title">静かな空間で、気持ちまで整いました。</h3>
@@ -801,7 +824,6 @@
                             </p>
 
                         </div>
-                        <div class="review-image"><img src="woman.png" alt="Review Calm"></div>
                     </article>
 
                     <article class="review-card is-hidden" data-page="5">
@@ -816,6 +838,7 @@
                     </article>
 
                     <article class="review-card reverse is-hidden" data-page="6">
+                        <div class="review-image"><img src="friend2.png" alt="Review Friends"></div>
                         <div class="review-body">
                             <div class="stars">★★★★★　<span class="review-meta">Rさん / 20代 / 学生</span></div>
                             <h3 class="review-title">香りを選ぶ時間そのものが思い出になる。</h3>
@@ -823,7 +846,6 @@
                             </p>
 
                         </div>
-                        <div class="review-image"><img src="friend2.png" alt="Review Friends"></div>
                     </article>
 
                     <article class="review-card is-hidden" data-page="7">
@@ -838,6 +860,7 @@
                     </article>
 
                     <article class="review-card reverse is-hidden" data-page="8">
+                        <div class="review-image"><img src="man3.png" alt="Review Comfort"></div>
                         <div class="review-body">
                             <div class="stars">★★★★★　<span class="review-meta">Sさん / 30代 / 社会人</span></div>
                             <h3 class="review-title">忙しい日にもそっと寄り添う香り。</h3>
@@ -845,7 +868,6 @@
                             </p>
 
                         </div>
-                        <div class="review-image"><img src="man3.png" alt="Review Comfort"></div>
                     </article>
 
                     <article class="review-card is-hidden" data-page="9">
@@ -932,7 +954,7 @@
         const pageChipsWrap = document.getElementById('pageChips');
         const pagePrev = document.getElementById('pagePrev');
         const pageNext = document.getElementById('pageNext');
-        const pageTotal = reviewCards.length;
+        const getPageTotal = () => (window.innerWidth > 960 ? Math.ceil(reviewCards.length / 3) : reviewCards.length);
         const visibleChipCount = 3;
         let currentPage = 1;
         let chipStartPage = 1;
@@ -946,6 +968,7 @@
 
         const renderPageChips = () => {
             if (!pageChipsWrap) return;
+            const pageTotal = getPageTotal();
             const chipEndPage = Math.min(pageTotal, chipStartPage + visibleChipCount - 1);
             const chips = [];
             for (let page = chipStartPage; page <= chipEndPage; page += 1) {
@@ -962,10 +985,19 @@
         };
 
         const setReviewPage = (page) => {
-            currentPage = Number(page);
-            reviewCards.forEach((card) => {
-                card.classList.toggle('is-hidden', Number(card.dataset.page) !== currentPage);
-            });
+            const pageTotal = getPageTotal();
+            currentPage = Math.max(1, Math.min(Number(page), pageTotal));
+            if (window.innerWidth > 960) {
+                const startIndex = (currentPage - 1) * 3;
+                const endIndex = startIndex + 3;
+                reviewCards.forEach((card, index) => {
+                    card.classList.toggle('is-hidden', index < startIndex || index >= endIndex);
+                });
+            } else {
+                reviewCards.forEach((card, index) => {
+                    card.classList.toggle('is-hidden', index !== currentPage - 1);
+                });
+            }
             if (currentPage < chipStartPage) {
                 chipStartPage = currentPage;
             } else if (currentPage > chipStartPage + visibleChipCount - 1) {
@@ -983,9 +1015,14 @@
         });
 
         pageNext?.addEventListener('click', () => {
-            if (currentPage >= pageTotal) return;
+            if (currentPage >= getPageTotal()) return;
             setReviewPage(currentPage + 1);
             scrollToReviewCard();
+        });
+
+        window.addEventListener('resize', () => {
+            chipStartPage = 1;
+            setReviewPage(currentPage);
         });
 
         setReviewPage(1);
@@ -993,6 +1030,7 @@
 </body>
 
 </html>
+
 
 
 
