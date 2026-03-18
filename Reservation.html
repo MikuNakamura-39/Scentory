@@ -185,7 +185,7 @@
         }
 
         .hero {
-            padding: 72px 0 38px;
+            padding: 140px 0 38px;
         }
 
         .hero-wide {
@@ -210,7 +210,7 @@
             position: relative;
             z-index: 1;
             width: 660px;
-            padding: 74px 0 0 180px;
+            padding: 112px 0 0 180px;
         }
 
         .eyebrow {
@@ -1094,19 +1094,20 @@
         }
 
         .nav .reserve {
-            width: auto;
-            height: auto;
-            border-radius: 0;
-            background: transparent;
-            position: static;
-            overflow: visible;
-            display: inline;
-            place-items: initial;
-            color: var(--accent);
-            text-align: left;
-            font-size: inherit;
-            line-height: inherit;
-            margin-left: 0;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, .72);
+            border: 1px solid rgba(168, 5, 7, .88);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
             box-shadow: none;
             font-weight: 700;
         }
@@ -1115,8 +1116,18 @@
             .nav .reserve {
                 width: auto;
                 height: auto;
+                background: transparent;
+                border: 0;
+                display: block;
+                place-items: initial;
+                position: static;
+                overflow: visible;
+                color: var(--accent);
+                text-align: left;
                 font-size: 11px;
                 line-height: 1.6;
+                padding: 0;
+                margin-left: 0;
             }
 
             .nav-meta {
@@ -1177,7 +1188,8 @@
                 <a href="Reservation.html" class="reserve">Reservation</a>
                 <div class="nav-meta">
                     <p class="brand">Scentory</p>
-                    <p>〒000-0000 東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
+                    <p>〒000-0000</p>
+                    <p>東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
                     <p>営業時間 11:00 - 19:00 / 最終受付 17:30</p>
                     <p>JR原宿駅・東京メトロ明治神宮前駅より 徒歩6分</p>
                 </div>
@@ -1605,8 +1617,3 @@
 </body>
 
 </html>
-
-
-
-
-
