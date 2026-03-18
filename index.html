@@ -636,7 +636,8 @@
             grid-template-columns: 470px 1fr;
             gap: 12px;
             align-items: center;
-            margin-bottom: 40px;
+            width: min(100%, 920px);
+            margin: 0 auto 40px 0;
         }
 
         .stories-list {
@@ -650,6 +651,7 @@
         .story-row.reverse {
             grid-template-columns: 1fr 470px;
             gap: 12px;
+            margin: 0 0 40px auto;
         }
 
         .story-image {
@@ -661,7 +663,7 @@
 
         .story-copy {
             width: 100%;
-            max-width: 530px;
+            max-width: 420px;
             justify-self: start;
             margin-left: 18px;
         }
@@ -1134,6 +1136,10 @@
                 justify-self: auto;
             }
 
+            .story-row.reverse .story-image {
+                order: -1;
+            }
+
             .footer-top {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 28px 36px;
@@ -1509,19 +1515,20 @@
         }
 
         .nav .reserve {
-            width: auto;
-            height: auto;
-            border-radius: 0;
-            background: transparent;
-            position: static;
-            overflow: visible;
-            display: inline;
-            place-items: initial;
-            color: var(--accent);
-            text-align: left;
-            font-size: inherit;
-            line-height: inherit;
-            margin-left: 0;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: rgba(168, 5, 7, .72);
+            border: 1px solid rgba(168, 5, 7, .88);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            margin-left: 12px;
             box-shadow: none;
             font-weight: 700;
         }
@@ -1530,8 +1537,18 @@
             .nav .reserve {
                 width: auto;
                 height: auto;
+                background: transparent;
+                border: 0;
+                display: block;
+                place-items: initial;
+                position: static;
+                overflow: visible;
+                color: var(--accent);
+                text-align: left;
                 font-size: 11px;
                 line-height: 1.6;
+                padding: 0;
+                margin-left: 0;
             }
 
             .nav-meta {
@@ -1593,7 +1610,8 @@
                     <a href="Reservation.html" class="reserve">Reservation</a>
                     <div class="nav-meta">
                         <p class="brand">Scentory</p>
-                        <p>〒000-0000 東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
+                    <p>〒000-0000</p>
+                    <p>東京都渋谷区神宮前0-0-0 Scentory Studio 1F</p>
                         <p>営業時間 11:00 - 19:00 / 最終受付 17:30</p>
                         <p>JR原宿駅・東京メトロ明治神宮前駅より 徒歩6分</p>
                     </div>
@@ -1763,14 +1781,14 @@
                         <p>記念日のデートで利用しました。香水を自分たちで作るのは初めてでしたが、スタッフの方が丁寧に説明してくれるので安心して楽しめました。香りを一緒に選ぶ時間もすごく楽しくて、2人の思い出になりました。完成した香水を持ち帰れるのも嬉しくて、帰ってからもその香りを嗅ぐと今日のことを思い出します。普通のデートとは違う特別な体験ができました。
                     </div>
                 </div>
-                <div class="story-row">
-                    <div class="story-image fade-up"><img src="friend.png" alt="Friends"></div>
+                <div class="story-row reverse">
                     <div class="story-copy right fade-up">
                         <div class="stars">★★★★★　<span class="review-meta">Tさん、Cさん/20代/学生</span></div>
                         <h3 class="story-title">旅の思い出を、香りにして持ち帰る。</h3>
                         <p>旅行で浅草に来たときに体験しました。お店の雰囲気がおしゃれで、香りもたくさんあって選ぶのがとても楽しかったです。自分の好みを考えながら香水を作るのは初めてで、友達と「この香りいいね」と話しながら作る時間がすごく盛り上がりました。完成したボトルも可愛くて写真映えします。旅行の思い出としてとても良い体験になりました。
                         </p>
                     </div>
+                    <div class="story-image fade-up"><img src="friend.png" alt="Friends"></div>
                 </div>
 
                 <div class="story-row">
@@ -2057,5 +2075,3 @@
 </body>
 
 </html>
-
-
